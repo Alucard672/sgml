@@ -1,0 +1,38 @@
+<!--category.wxml-->
+<!-- <view class="category-bg"></view> -->
+<view class="category-content">
+  <!-- 一级目录列表 -->
+  <view wx:if="{{!showSub}}">
+    <view class="category-title">一级目录</view>
+    <view class="category-card-grid">
+      <view class="category-card" wx:for="{{categories}}" wx:key="_id" bindtap="onCategoryTap" data-category="{{item}}">
+        <view class="category-card-main">
+          <view class="category-name">{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 二级目录列表 -->
+  <view wx:if="{{showSub}}">
+    <view class="category-title">{{selectedCategory.name}}</view>
+    <view class="category-card-grid">
+      <view class="category-card" wx:for="{{subCategories}}" wx:key="_id" bindtap="onSubCategoryTap" data-category="{{item}}">
+        <view class="category-card-main">
+          <view class="category-name">{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+    <button style="margin:32rpx auto;display:block;" bindtap="loadCategories">返回上一级</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && allCategories.length === 0}}">
+    <text>暂无分类</text>
+  </view>
+</view> 

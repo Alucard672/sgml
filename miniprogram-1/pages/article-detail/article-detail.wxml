@@ -1,0 +1,12 @@
+<view class="container">
+  <block wx:if="{{article}}">
+    <view class="article-title">{{article.title}}</view>
+    <view class="article-meta">
+      <text>{{article.createTime}}</text>
+      <text>{{article.views || 0}} 阅读</text>
+    </view>
+    <mp-html content="{{article.content}}" />
+  </block>
+  <view wx:if="{{loading}}">加载中...</view>
+  <view wx:if="{{error}}">{{error}}</view>
+</view> 

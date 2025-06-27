@@ -1,0 +1,49 @@
+/* GameLight 主题色变量 */
+:root {
+  --primary: #3D7EFF;
+  --accent: #4ADE80;
+  --danger: #FF5F5F;
+  --text-main: #1A1A1A;
+  --text-secondary: #666666;
+  --bg-main: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --border: #E2E8F0;
+  --btn-hover: #E0EDFF;
+}
+
+.container, .import-page {
+  background: var(--bg-main);
+}
+
+.page-title {
+  color: var(--primary);
+}
+
+.form-section, .action-section, .result-section, .help-section {
+  background: var(--bg-card);
+  border: 1rpx solid var(--border);
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03);
+}
+
+.form-label {
+  color: var(--text-secondary);
+}
+
+.picker, .form-input {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1rpx solid var(--border);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-secondary {
+  background: var(--btn-hover);
+  color: var(--primary);
+}
+.btn-disabled {
+  background: #CCCCCC;
+  color: #fff;
+} 

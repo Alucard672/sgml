@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后台登录</title>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <style>
+    body { background: #f5f6fa; }
+    .login-container {
+      width: 360px;
+      margin: 120px auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 40px 32px 32px 32px;
+    }
+    .login-title { text-align: center; font-size: 22px; margin-bottom: 30px; color: #409eff; }
+    .el-form-item { margin-bottom: 24px; }
+    .el-button { width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="loginApp" class="login-container">
+    <div class="login-title">后台管理登录</div>
+    <el-form :model="form" ref="form" @submit.native.prevent="onLogin">
+      <el-form-item>
+        <el-input v-model="form.username" placeholder="用户名"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input v-model="form.password" type="password" placeholder="密码"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onLogin">登录</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-ui@2/lib/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#loginApp',
+      data: {
+        form: {
+          username: '',
+          password: ''
+        }
+      },
+      methods: {
+        async onLogin() {
+          if (!this.form.username || !this.form.password) {
+            this.$message.error('请输入用户名和密码');
+            return;
+          }
+          try {
+            // 调用后端登录接口
+            const res = await axios.post('https://cloud1-3gczd9wwc26ab81f-1317506172.ap-shanghai.app.tcloudbase.com/adminApi', {
+              action: 'login',
+              data: {
+                username: this.form.username,
+                password: this.form.password
+              }
+            });
+            if (res.data.code === 0 && res.data.data && res.data.data.token) {
+              localStorage.setItem('token', res.data.data.token);
+              this.$message.success('登录成功');
+              setTimeout(() => {
+                window.location.href = 'index.html';
+              }, 500);
+            } else {
+              this.$message.error(res.data.msg || '登录失败');
+            }
+          } catch (e) {
+            this.$message.error('登录请求失败');
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html> 

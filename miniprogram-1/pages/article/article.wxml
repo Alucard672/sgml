@@ -1,0 +1,31 @@
+<!--article.wxml-->
+<view class="container">
+  <!-- 分类文章列表模式 -->
+  <block wx:if="{{articles && articles.length > 0}}">
+    <view class="category-title">{{categoryName}}</view>
+    <view class="article-list">
+      <view class="article-item" wx:for="{{articles}}" wx:key="_id" bindtap="onArticleTap" data-article="{{item}}">
+        <view class="article-image" wx:if="{{item.coverImage}}">
+          <image src="{{item.coverImage}}" mode="aspectFill" class="cover-image"/>
+        </view>
+        <view class="article-title">{{item.title}}</view>
+        <view class="article-summary">{{item.summary}}</view>
+        <view class="article-meta">
+          <view class="article-date">{{item.createTime}}</view>
+          <view class="article-views">{{item.views || 0}} 阅读</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 错误状态 -->
+  <view class="error" wx:if="{{error}}">
+    <text>{{error}}</text>
+    <button class="btn-primary" bindtap="retryLoad">重试</button>
+  </view>
+</view> 

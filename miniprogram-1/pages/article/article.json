@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "文章详情",
+  "backgroundColor": "#f8f9fa",
+  "usingComponents": {
+    "mp-html": "/components/mp-html/index"
+  }
+} 

@@ -1,0 +1,115 @@
+.container {
+  padding: 32rpx 20rpx;
+  background: #fff;
+  min-height: 100vh;
+}
+.article-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  margin: 140rpx 0 24rpx 0;
+  color: #1e71ca;
+  text-align: center;
+  line-height: 1.4;
+}
+.article-meta {
+  color: #8BAE9A;
+  font-size: 24rpx;
+  margin-bottom: 32rpx;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 20rpx;
+}
+mp-html {
+  font-size: 30rpx;
+  line-height: 1.8;
+  color: #333;
+  word-break: break-word;
+  white-space: normal;
+}
+mp-html p {
+  margin: 0 0 24rpx 0 !important;
+  text-align: justify;
+  line-height: 1.8;
+}
+mp-html h1,
+mp-html h2,
+mp-html h3,
+mp-html h4,
+mp-html h5,
+mp-html h6 {
+  font-weight: bold;
+  margin: 32rpx 0 16rpx 0;
+  color: #1e71ca;
+  line-height: 1.4;
+}
+mp-html h1 { font-size: 36rpx; }
+mp-html h2 { font-size: 32rpx; }
+mp-html h3 { font-size: 30rpx; }
+mp-html h4 { font-size: 28rpx; }
+mp-html h5 { font-size: 26rpx; }
+mp-html h6 { font-size: 24rpx; }
+mp-html ul,
+mp-html ol {
+  margin: 16rpx 0 16rpx 32rpx;
+  padding-left: 24rpx;
+}
+mp-html li {
+  margin-bottom: 12rpx;
+  line-height: 1.8;
+}
+mp-html blockquote {
+  background: #f8f9fa;
+  border-left: 6rpx solid #1e71ca;
+  padding: 20rpx 24rpx;
+  margin: 24rpx 0;
+  border-radius: 0 8rpx 8rpx 0;
+  color: #666;
+  font-style: italic;
+}
+mp-html code {
+  background: #f1f3f4;
+  padding: 4rpx 8rpx;
+  border-radius: 4rpx;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 26rpx;
+  color: #e74c3c;
+}
+mp-html pre {
+  background: #f8f9fa;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  overflow-x: auto;
+  margin: 24rpx 0;
+}
+mp-html pre code {
+  background: none;
+  padding: 0;
+  color: #333;
+}
+mp-html img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8rpx;
+  margin: 20rpx 0;
+  display: block;
+}
+mp-html a {
+  color: #1e71ca;
+  text-decoration: none;
+}
+mp-html strong,
+mp-html b {
+  font-weight: bold;
+  color: #333;
+}
+mp-html em,
+mp-html i {
+  font-style: italic;
+  color: #666;
+}
+mp-html hr {
+  border: none;
+  border-top: 1rpx solid #e0e0e0;
+  margin: 32rpx 0;
+} 

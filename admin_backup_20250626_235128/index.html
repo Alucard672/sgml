@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>游戏攻略后台管理</title>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/wangeditor@4.6.17/dist/wangEditor.min.css">
+</head>
+<body>
+  <div id="app">
+    <el-container>
+      <el-header>
+        <div class="logo">游戏攻略后台管理</div>
+        <div>
+          <el-button type="text" @click="logout">退出登录</el-button>
+        </div>
+      </el-header>
+      <el-container>
+        <el-aside width="200px">
+          <el-menu :default-active="activeMenu" @select="handleMenuSelect">
+            <el-menu-item index="dashboard"><i class="el-icon-s-home"></i><span>仪表盘</span></el-menu-item>
+            <el-menu-item index="banners"><i class="el-icon-picture"></i><span>轮播图管理</span></el-menu-item>
+            <el-menu-item index="categories"><i class="el-icon-folder"></i><span>分类管理</span></el-menu-item>
+            <el-menu-item index="articles"><i class="el-icon-document"></i><span>文章管理</span></el-menu-item>
+            <el-menu-item index="publish"><i class="el-icon-edit"></i><span>发布文章</span></el-menu-item>
+          </el-menu>
+        </el-aside>
+        <el-main>
+          <div v-if="activeMenu === 'dashboard'">
+            <h2>仪表盘</h2>
+            <el-row :gutter="20">
+              <el-col :span="6"><el-card><div>文章总数: {{stats.articleCount}}</div></el-card></el-col>
+              <el-col :span="6"><el-card><div>分类总数: {{stats.categoryCount}}</div></el-card></el-col>
+              <el-col :span="6"><el-card><div>轮播图总数: {{stats.bannerCount}}</div></el-card></el-col>
+            </el-row>
+          </div>
+          <div v-if="activeMenu === 'banners'">
+            <h2>轮播图管理</h2>
+            <el-button type="primary" @click="showBannerDialog('add')">添加轮播图</el-button>
+            <el-table :data="banners || []">
+              <el-table-column prop="title" label="标题"></el-table-column>
+              <el-table-column prop="imageUrl" label="图片"></el-table-column>
+              <el-table-column prop="status" label="状态"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="editBanner(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="danger" @click="deleteBanner(scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <el-dialog
+            :title="bannerDialogType === 'add' ? '添加轮播图' : '编辑轮播图'"
+            :visible.sync="bannerDialogVisible">
+            <el-form :model="bannerForm" label-width="80px">
+              <el-form-item label="标题">
+                <el-input v-model="bannerForm.title"></el-input>
+              </el-form-item>
+              <el-form-item label="图片链接">
+                <el-input v-model="bannerForm.imageUrl"></el-input>
+              </el-form-item>
+              <el-form-item label="跳转类型">
+                <el-input v-model="bannerForm.linkType"></el-input>
+              </el-form-item>
+              <el-form-item label="跳转地址">
+                <el-input v-model="bannerForm.linkUrl"></el-input>
+              </el-form-item>
+              <el-form-item label="状态">
+                <el-select v-model="bannerForm.status">
+                  <el-option label="启用" value="active"></el-option>
+                  <el-option label="禁用" value="inactive"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="排序">
+                <el-input type="number" v-model="bannerForm.sort"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="bannerDialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="submitBanner">确 定</el-button>
+            </div>
+          </el-dialog>
+          <div v-if="activeMenu === 'categories'">
+            <h2>分类管理</h2>
+            <el-button type="primary" @click="showCategoryDialog('add')">添加分类</el-button>
+            <el-table :data="categories || []">
+              <el-table-column prop="name" label="分类名称"></el-table-column>
+              <el-table-column prop="icon" label="图标"></el-table-column>
+              <el-table-column prop="status" label="状态"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="editCategory(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="danger" @click="deleteCategory(scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <el-dialog
+            :title="categoryDialogType === 'add' ? '添加分类' : '编辑分类'"
+            :visible.sync="categoryDialogVisible">
+            <el-form :model="categoryForm" label-width="80px">
+              <el-form-item label="分类名称">
+                <el-input v-model="categoryForm.name"></el-input>
+              </el-form-item>
+              <el-form-item label="图标">
+                <el-input v-model="categoryForm.icon"></el-input>
+              </el-form-item>
+              <el-form-item label="状态">
+                <el-select v-model="categoryForm.status">
+                  <el-option label="启用" value="active"></el-option>
+                  <el-option label="禁用" value="inactive"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="排序">
+                <el-input type="number" v-model="categoryForm.sort"></el-input>
+              </el-form-item>
+              <el-form-item label="首页显示">
+                <el-switch v-model="categoryForm.showOnHome" active-text="显示" inactive-text="隐藏"></el-switch>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="categoryDialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="submitCategory">确 定</el-button>
+            </div>
+          </el-dialog>
+          <div v-if="activeMenu === 'articles'">
+            <h2>文章管理</h2>
+            <el-button type="primary" @click="goToPublish">发布文章</el-button>
+            <el-table :data="articles || []">
+              <el-table-column prop="title" label="标题"></el-table-column>
+              <el-table-column prop="categoryName" label="分类"></el-table-column>
+              <el-table-column prop="status" label="状态"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="editArticle(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="danger" @click="deleteArticle(scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div v-if="activeMenu === 'publish'">
+            <h2>发布文章</h2>
+            <el-form :model="articleForm" label-width="100px">
+              <el-form-item label="文章标题">
+                <el-input v-model="articleForm.title"></el-input>
+              </el-form-item>
+              <el-form-item label="选择分类">
+                <el-select v-model="articleForm.categoryId">
+                  <el-option v-for="category in (categories || [])" :key="category._id" :label="category.name" :value="category._id"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="文章内容">
+                <div id="editor-toolbar"></div>
+                <div id="editor-content" style="border:1px solid #ccc; min-height:200px;"></div>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="submitArticle">发布文章</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+        </el-main>
+      </el-container>
+    </el-container>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-ui@2/lib/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/wangeditor@4.6.17/dist/wangEditor.min.js"></script>
+  <script>
+    // 全局粘贴监听 - 调试用
+    document.addEventListener('paste', function(e) {
+        console.log('=== 主页面全局粘贴事件触发 ===');
+        console.log('事件对象:', e);
+        console.log('目标元素:', e.target);
+        
+        let text = (e.clipboardData || window.clipboardData).getData('text');
+        let html = (e.clipboardData || window.clipboardData).getData('text/html');
+        
+        console.log('粘贴的纯文本:', text);
+        console.log('粘贴的HTML:', html);
+        
+        if (text) {
+            console.log('全局捕获到粘贴内容：', text.substring(0, 200) + (text.length > 200 ? '...' : ''));
+        } else {
+            console.log('全局粘贴事件触发，但未获取到文本内容');
+        }
+    });
+  </script>
+  <script src="js/app.js"></script>
+</body>
+</html> 

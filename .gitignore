@@ -1,0 +1,19 @@
+# 微信小程序常用忽略文件
+node_modules/
+dist/
+*.log
+*.tmp
+.DS_Store
+.idea/
+.vscode/
+.project.config.json
+.project.private.config.json
+.project.config.yaml
+.project.private.config.yaml
+*.zip
+*.bak
+*.swp
+# 云开发本地环境
+cloudfunctions/*/node_modules/
+cloudfunctions/*/dist/
+cloudfunctions/*/package-lock.json 

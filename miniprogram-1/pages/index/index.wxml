@@ -1,0 +1,54 @@
+<!--index.wxml-->
+<navigation-bar title="Weixin" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <!-- 状态栏占位 -->
+    <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+    
+    <!-- <view class="home-bg"></view> -->
+    <view class="home-content">
+      <!-- 顶部标题 -->
+      <view class="home-title">游戏攻略站</view>
+      <view class="home-subtitle">发现 · 分享 · 提升</view>
+
+      <!-- 轮播图 -->
+      <view class="swiper-section">
+        <swiper class="swiper" indicator-dots="{{true}}" autoplay="{{true}}" interval="3000" duration="500">
+          <swiper-item wx:for="{{banners}}" wx:key="id">
+            <image src="{{item.imageUrl}}" class="swiper-image" mode="aspectFill" bindtap="onBannerTap" data-item="{{item}}"/>
+          </swiper-item>
+        </swiper>
+      </view>
+
+      <!-- 热门分类 -->
+      <view class="section-title">热门分类</view>
+      <view class="category-row">
+        <view class="category-card" wx:for="{{fixedCategories}}" wx:key="id" bindtap="onCategoryTap" data-category="{{item}}">
+          <view class="category-icon">{{item.icon}}</view>
+          <view class="category-name">{{item.name}}</view>
+        </view>
+      </view>
+
+      <!-- 文章区，标题动态显示当前分类名 -->
+      <view class="section-title" style="margin-top: 40rpx;">{{currentCategory ? currentCategory.name : ''}}</view>
+      <view class="article-list">
+        <block wx:if="{{articles.length > 0}}">
+          <view class="article-item card" wx:for="{{articles}}" wx:key="id" bindtap="onArticleTap" data-article="{{item}}">
+            <view class="article-image" wx:if="{{item.coverImage}}">
+              <image src="{{item.coverImage}}" mode="aspectFill" class="cover-image"/>
+            </view>
+            <view class="article-content">
+              <view class="article-title">{{item.title}}</view>
+              <view class="article-summary">{{item.summary}}</view>
+              <view class="article-meta">
+                <view class="article-date">{{item.createTime}}</view>
+                <view class="article-views">{{item.views}} 阅读</view>
+              </view>
+            </view>
+          </view>
+        </block>
+        <view wx:else class="empty">暂无文章</view>
+      </view>
+    </view>
+  </view>
+</scroll-view>
