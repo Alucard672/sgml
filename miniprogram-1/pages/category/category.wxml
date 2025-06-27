@@ -1,9 +1,9 @@
 <!--category.wxml-->
 <!-- <view class="category-bg"></view> -->
-<view class="category-content">
+<view class="category-content" style="position: relative; left: 0rpx; top: 95rpx">
   <!-- 一级目录列表 -->
   <view wx:if="{{!showSub}}">
-    <view class="category-title">一级目录</view>
+    <!-- <view class="category-title">一级目录</view> -->
     <view class="category-card-grid">
       <view class="category-card" wx:for="{{categories}}" wx:key="_id" bindtap="onCategoryTap" data-category="{{item}}">
         <view class="category-card-main">
@@ -23,7 +23,7 @@
         </view>
       </view>
     </view>
-    <button style="margin:32rpx auto;display:block;" bindtap="loadCategories">返回上一级</button>
+    <!-- <button style="margin:32rpx auto;display:block;" bindtap="loadCategories">返回上一级</button> -->
   </view>
 
   <!-- 加载状态 -->

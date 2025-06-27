@@ -146,6 +146,16 @@ Page({
         .get()
       let categories = result.data;
       // 2. 默认显示公告分类
+      // 为每个分类补充 icon 字段（emoji）
+      const iconMap = {
+        '公告': '📢',
+        '攻略': '📖',
+        '推荐': '🔍'
+      };
+      categories = categories.map(c => ({
+        ...c,
+        icon: iconMap[c.name] || '📢'
+      }));
       let defaultCategory = categories.find(c => c.name === '公告') || categories[0];
       this.setData({
         fixedCategories: categories,

@@ -127,16 +127,24 @@ page {
 }
 
 .category-icon {
-  font-size: 56rpx;
+  width: 64rpx;
+  height: 64rpx;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44rpx;
   margin-bottom: 12rpx;
-  color: #fff;
+  color: #3fdaa6;
   text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.10);
 }
 
 .category-name {
   font-size: 28rpx;
   font-weight: 700;
-  color: #4F8EF7;
+  color: #4ff75d;
   letter-spacing: 1rpx;
   text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.10);
 }
@@ -170,7 +178,7 @@ page {
 
 .section-more {
   font-size: 28rpx;
-  color: #007AFF;
+  color: #00ff80;
 }
 
 .article-list {
@@ -271,8 +279,8 @@ page {
   padding: 24rpx;
 }
 .header {
-  background: #4F8EF7;
-  color: white;
+  background: #1ac545;
+  color: rgb(255, 255, 255);
   padding: 40rpx 20rpx;
   text-align: center;
 }
@@ -294,10 +302,10 @@ page {
   margin-bottom: 16rpx;
 }
 .category-card.active {
-  border: 2rpx solid #4F8EF7;
+  border: 2rpx solid #fdfdfd;
 }
 .category-name {
-  color: #4F8EF7;
+  color: #26a757;
 }
 .article-card {
   background: #fff;
@@ -326,7 +334,7 @@ page {
   --primary: #6FCF97;
   --primary-dark: #56B47F;
   --primary-light: #E6F4EC;
-  --accent-blue: #3D7EFF;
+  --accent-blue: #19e675;
   --bg-main: #F9FAFB;
   --text-main: #202020;
   --text-secondary: #666666;

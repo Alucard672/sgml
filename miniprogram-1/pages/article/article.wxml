@@ -24,8 +24,8 @@
   </view>
 
   <!-- 错误状态 -->
-  <view class="error" wx:if="{{error}}">
+  <view class="error" wx:if="{{error}}" style="position: relative; left: 0rpx; top: 139rpx">
     <text>{{error}}</text>
-    <button class="btn-primary" bindtap="retryLoad">重试</button>
+    <button class="btn-primary" bindtap="retryLoad" style="position: relative; left: 0rpx; top: 312rpx">重试</button>
   </view>
 </view> 
