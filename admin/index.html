@@ -154,7 +154,7 @@
               </el-table-column>
             </el-table>
           </div>
-          <div v-if="activeMenu === 'publish'">
+          <div v-show="activeMenu === 'publish'">
             <h2>发布文章</h2>
             <el-form :model="articleForm" label-width="100px">
               <el-form-item label="文章标题">

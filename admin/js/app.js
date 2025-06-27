@@ -61,9 +61,7 @@ new Vue({
         this.loadCategories();
         this.loadArticles();
         this.$nextTick(() => {
-            if (this.activeMenu === 'publish') {
-                this.initEditor();
-            }
+            this.initEditor();
         });
         // 前端登录校验，未登录跳转到登录页
         if (!localStorage.getItem('token')) {
@@ -72,7 +70,11 @@ new Vue({
     },
     
     watch: {
-        activeMenu(val) {
+        activeMenu(val, oldVal) {
+            if (oldVal === 'publish' && this.editor && this.editor.destroy) {
+                this.editor.destroy();
+                this.editor = null;
+            }
             if (val === 'publish') {
                 this.$nextTick(() => {
                     this.initEditor();
@@ -199,7 +201,9 @@ new Vue({
             this.activeMenu = 'publish';
             this.articleForm = { ...article };
             this.$nextTick(() => {
-                this.initEditor();
+                if (this.editor) {
+                    this.editor.setData(this.articleForm.content || '');
+                }
             });
         },
         
@@ -224,34 +228,45 @@ new Vue({
                 summary: '',
                 coverImage: '',
                 status: 'published',
-                isRecommend: false
+                isRecommend: false,
+                views: 0
             };
             this.$nextTick(() => {
-                this.initEditor();
+                if (this.editor) {
+                    this.editor.setData('');
+                }
             });
         },
         
         // 提交文章
         async submitArticle() {
             try {
-                if (!this.articleForm.title || !this.articleForm.categoryId || !this.articleForm.content) {
-                    this.$message.error('请填写完整信息');
+                if (!this.articleForm.title || !this.articleForm.content) {
+                    this.$message.error('请填写完整内容');
                     return;
+                }
+                if (!this.articleForm.views) {
+                    this.articleForm.views = 0;
+                }
+                if (!this.articleForm.status) {
+                    this.articleForm.status = 'published';
                 }
                 if (this.articleForm._id) {
                     // 编辑
                     const { _id, createTime, _openid, ...rest } = this.articleForm;
-                    await callCloud('updateArticle', { id: _id, ...rest });
-                    this.$message.success('编辑成功');
+                    const safeData = this.deepRemoveId(rest);
+                    await callCloud('updateArticle', { id: _id, data: safeData });
+                    this.$message.success('文章编辑成功');
                 } else {
                     // 新增
                     await callCloud('addArticle', this.articleForm);
-                    this.$message.success('发布成功');
+                    this.$message.success('文章发布成功');
                 }
-                this.loadArticles();
                 this.activeMenu = 'articles';
-            } catch (error) {
+                this.loadArticles();
+            } catch (e) {
                 this.$message.error('发布失败');
+                console.error('submitArticle error', e);
             }
         },
         
@@ -329,21 +344,13 @@ new Vue({
         },
         
         initEditor() {
-            // 调试输出
-            console.log('initEditor called, CKEDITOR:', typeof CKEDITOR, 'container:', document.getElementById('ckeditor'));
-            // 销毁原有编辑器实例
-            if (this.editor && this.editor.destroy) {
-                this.editor.destroy();
-                this.editor = null;
-            }
-            // 清空编辑器容器，防止重复渲染
+            if (this.editor) return; // 只初始化一次
             const ckeditorContainer = document.getElementById('ckeditor');
             if (ckeditorContainer) {
                 ckeditorContainer.innerHTML = '';
             } else {
                 console.error('未找到 #ckeditor 容器');
             }
-            // 初始化 CKEditor Super Build，启用颜色插件
             if (typeof CKEDITOR === 'undefined') {
                 console.error('CKEDITOR 未加载');
                 return;

@@ -37,6 +37,8 @@ exports.main = async (event, context) => {
     }
     if (action === 'addArticle') {
       if (data && data._id) delete data._id; // 防止主键冲突
+      // 兜底保证 views 字段
+      if (typeof data.views !== 'number') data.views = 0;
       await db.collection('articles').add({ data })
       return success('ok')
     }

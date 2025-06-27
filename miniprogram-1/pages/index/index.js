@@ -86,7 +86,7 @@ Page({
     const banner = e.currentTarget.dataset.item
     if (banner.linkType === 'article' && banner.articleId) {
       wx.navigateTo({
-        url: `/pages/article/article?id=${banner.articleId}`
+        url: `/pages/article-detail/article-detail?id=${banner.articleId}`
       })
     } else if (banner.linkType === 'url' && banner.linkUrl) {
       // 可以打开外部链接或内部页面
@@ -100,7 +100,7 @@ Page({
   onArticleTap(e) {
     const article = e.currentTarget.dataset.article;
     wx.navigateTo({
-      url: `/pages/article/article?id=${article._id}`
+      url: `/pages/article-detail/article-detail?id=${article._id}`
     });
   },
 
